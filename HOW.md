@@ -3,26 +3,33 @@
 python3 -m venv venv --upgrade-deps
 . venv/bin/activate
 ```
-### INSTALL
+### DEPS
 ```bash
 pip install -r ./requirements.txt 
+```
+### DB
+```
+psql -U postgres
+CREATE DATABASE ioc;
 ```
 ### PLAY
 ```bash
 flask db --help             # migration
 flask run --debug
 ```
-### GENERATED DB
-```bash
-instance/app.db             # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-sqlite3 instance/app.db
-.tables
+### DUMMY
+```
+psql -U postgres -d ioc
 INSERT INTO user (id, name) VALUES (1, Phil)
 INSERT INTO user (id, name) VALUES (2, Dom)
-.exit
+\quit
 ```
-### ENDPOINT
+### CHECK
 ```
 http://localhost:5000/user/1
 http://localhost:5000/user/2
+```
+### FORMATTER
+```bash
+yapf -i [file].py
 ```
