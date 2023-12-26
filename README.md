@@ -25,4 +25,4 @@ To contribute:
 5. Run it with this code
     ```bash
     flask run
-    ```bash
+    ```
