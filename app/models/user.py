@@ -7,10 +7,10 @@ class User(db.Model):
     name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(100), index=True, unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
-    grade = db.Column(db.String(250), nullable=False)
-    school = db.Column(db.String(250), nullable=False)
+    grade = db.Column(db.String(250))
+    school = db.Column(db.String(250))
     role = db.Column(db.String(250), nullable=False)
-    dob = db.Column(db.String(250), nullable=False)
+    dob = db.Column(db.DateTime(250))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 

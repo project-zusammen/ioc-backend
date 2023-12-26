@@ -1,6 +1,5 @@
 from app import app
-from app.blacklist import blacklist
-from app.controllers import UserController
+from app.controllers import user_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
 
@@ -12,27 +11,23 @@ def index():
 @app.route('/user', methods=['GET'])
 @jwt_required()
 def users():
-    user = get_jwt_identity()
-    return UserController.getAllUsers()
+    return user_controller.get_all_users()
 
 @app.route('/register', methods=['POST'])
 def register():
-    return UserController.register()
+    return user_controller.register()
 
 @app.route('/user/<id>', methods=['GET', 'PUT', 'DELETE'])
+@jwt_required()
 def userRoute(id):
     if request.method == 'GET':
-        return UserController.getUserByID(id)
+        return user_controller.get_user_by_id(id)
     elif request.method == 'PUT':
-        return UserController.updateUser(id)
+        return user_controller.update_user(id)
     elif request.method == 'DELETE':
-        return UserController.deleteUser(id)
+        return user_controller.delete_user(id)
 
 @app.route('/login', methods=['POST'])
 def logins():
-    return UserController.login()
+    return user_controller.login()
 
-@app.route('/logout', methods=['POST'])
-@jwt_required()
-def logout():
-    return UserController.logout()

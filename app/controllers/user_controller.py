@@ -1,11 +1,10 @@
 from app.models.user import User
 from app import response, app, db
-from app.blacklist import blacklist
 from flask import request, jsonify
 import datetime
 from flask_jwt_extended import *
 
-def getAllUsers():
+def get_all_users():
     try:
         users = User.query.all()
         return jsonify({'users': [
@@ -24,7 +23,7 @@ def getAllUsers():
     except Exception as e:
         print(e)
 
-def getUserByID(id):
+def get_user_by_id(id):
     try:
         user = User.query.get(id)
 
@@ -55,7 +54,9 @@ def register():
         school = request.form.get('school')
         role = request.form.get('role')
         grade = request.form.get('grade')
-        dob = 0
+        dob = request.form.get('dob')
+        if dob is None:
+            dob = '-'
 
         user = User(
             name=name,
@@ -73,7 +74,7 @@ def register():
     except Exception as e:
             print(e)
 
-def updateUser(id):
+def update_user(id):
     try:
         name = request.form.get('name')
         email = request.form.get('email')
@@ -82,19 +83,7 @@ def updateUser(id):
         role = request.form.get('role')
         grade = request.form.get('grade')
         updated_at = datetime.utcnow
-
-        data = [
-            {
-                'name': name,
-                'email': email,
-                'password': password,
-                'school': school,
-                'role': role,
-                'grade': grade,
-                'updated_at': updated_at
-            }
-        ]
-        
+       
         user = User.query.filter_by(id=id).first()
 
         if user:
@@ -111,6 +100,7 @@ def updateUser(id):
                 user.role = role
             if grade is not None:
                 user.grade = grade
+            user.updated_at = updated_at
 
             db.session.commit()
 
@@ -122,7 +112,7 @@ def updateUser(id):
     except Exception as e:
         print(e)
 
-def deleteUser(id):
+def delete_user(id):
     try:
         user = User.query.filter_by(id=id).first()
         if not user:
@@ -137,7 +127,6 @@ def deleteUser(id):
 
 def userData(data):
     data = {
-        'id': data.id,
         'name': data.name,
         'email': data.email,
         'school': data.school,
@@ -178,19 +167,3 @@ def login():
     except Exception as e:
         print(e)
 
-def logout():
-    try:
-        # Ambil identitas (biasanya berisi informasi pengguna)
-        jwt_identity = get_jwt_identity()
-
-        # Ambil token dari header Authorization
-        token = request.headers.get('Authorization').split()[1]
-
-        # Lakukan operasi logout di sini, seperti menambahkan JTI ke dalam daftar hitam (blacklist)
-        jti = decode_token(token)['jti']
-        blacklist.add(jti)
-
-        return jsonify(message='Logout success'), 200
-    except Exception as e:
-        print(e)
-        return jsonify(message='Failed to logout'), 500
