@@ -21,3 +21,8 @@ To contribute:
     ```
 
 4. Create a PR to the master branch
+
+5. Run it with this code
+    ```bash
+    flask run
+    ```bash
