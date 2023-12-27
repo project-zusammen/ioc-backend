@@ -26,3 +26,18 @@ To contribute:
     ```bash
     flask run
     ```
+
+6. Run this code for Init the DB
+    ```bash
+    flask db init
+    ```
+
+7. Run this code for migrate the database
+    ```bash
+    flask db migrate
+    ```
+
+8. Run this code for upgrade the database after the migrate
+    ```bash
+    flask db upgrade
+    ```
