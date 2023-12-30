@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import user_controller
+from app.controllers import user_controller, category_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
 
@@ -31,3 +31,18 @@ def userRoute(id):
 def logins():
     return user_controller.login()
 
+@app.route('/category', methods=['GET', 'POST'])
+@jwt_required()
+def category():
+    if request.method == 'GET':
+        return category_controller.get_all_category()
+    elif request.method == 'POST':
+        return category_controller.create_category()
+    
+@app.route('/category/<id>', methods=['GET', 'DELETE'])
+@jwt_required()
+def categoryRoute(id):
+    if request.method == 'GET':
+        return category_controller.get_category_by_id(id)
+    elif request.method == 'DELETE':
+        return category_controller.delete_category(id)
