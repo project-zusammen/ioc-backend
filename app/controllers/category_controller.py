@@ -36,7 +36,10 @@ def create_category():
         category = Category(name=name)
         db.session.add(category)
         db.session.commit()
-        return response.success('', 'Category has been created')
+        return jsonify({'category': {
+            'id': category.id,
+            'name': category.name,
+        }})
     except Exception as e:
         print(e)
 

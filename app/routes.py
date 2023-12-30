@@ -32,7 +32,6 @@ def logins():
     return user_controller.login()
 
 @app.route('/category', methods=['GET', 'POST'])
-@jwt_required()
 def category():
     if request.method == 'GET':
         return category_controller.get_all_category()
@@ -40,7 +39,6 @@ def category():
         return category_controller.create_category()
     
 @app.route('/category/<id>', methods=['GET', 'DELETE'])
-@jwt_required()
 def categoryRoute(id):
     if request.method == 'GET':
         return category_controller.get_category_by_id(id)
