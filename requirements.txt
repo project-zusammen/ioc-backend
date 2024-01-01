@@ -24,3 +24,4 @@ virtualenv== 20.25.0
 Werkzeug==3.0.1
 yapf==0.40.2
 zipp==3.17.0
+Flask-JWT-Extended>=4.3.0
