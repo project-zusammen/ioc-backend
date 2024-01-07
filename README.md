@@ -41,3 +41,8 @@ To contribute:
     ```bash
     flask db upgrade
     ```
+
+9. Run this code for formatting
+    ```bash
+    yapf -i [path/file].py
+    ```
