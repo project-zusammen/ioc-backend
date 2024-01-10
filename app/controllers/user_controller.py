@@ -4,49 +4,45 @@ from flask import request, jsonify
 import datetime
 from flask_jwt_extended import *
 
+def format_user(user):
+    return {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "school": user.school,
+        "role": user.role,
+        "grade": user.grade,
+        "dob": user.dob,
+        "created_at": user.created_at,
+        "updated_at": user.updated_at,
+    }
 
 def get_all_users():
     try:
         users = User.query.all()
-        return jsonify(
-            {
-                "users": [
-                    {
-                        "id": user.id,
-                        "name": user.name,
-                        "email": user.email,
-                        "school": user.school,
-                        "role": user.role,
-                        "grade": user.grade,
-                        "dob": user.dob,
-                        "created_at": user.created_at,
-                        "updated_at": user.updated_at,
-                    }
-                    for user in users
-                ]
-            }
-        )
+        formatted_users = [format_user(user) for user in users]
+        return jsonify({"users": formatted_users})
     except Exception as e:
         print(e)
 
 
 def get_user_by_id(id):
     try:
-        user = User.query.get(id)
+        GetUser = User.query.get(id)
 
-        if user:
-            data = {
-                "id": user.id,
-                "name": user.name,
-                "email": user.email,
-                "school": user.school,
-                "role": user.role,
-                "grade": user.grade,
-                "dob": user.dob,
-                "created_at": user.created_at,
-                "updated_at": user.updated_at,
+        if GetUser:
+            user = {
+                "id": GetUser.id,
+                "name": GetUser.name,
+                "email": GetUser.email,
+                "school": GetUser.school,
+                "role": GetUser.role,
+                "grade": GetUser.grade,
+                "dob": GetUser.dob,
+                "created_at": GetUser.created_at,
+                "updated_at": GetUser.updated_at,
             }
-            return jsonify(data)
+            return jsonify(user)
         else:
             return jsonify({"error": "User not found"}), 404
 

@@ -49,3 +49,9 @@ To contribute:
 10. Run this code to try the unit test
     ``` bash
     pytest tests/file_that_you_want_to_run.py
+    ```
+
+11. Run this code to test all the unit test
+    ``` bash
+    flask test
+    ```

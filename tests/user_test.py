@@ -79,7 +79,6 @@ class UserTestCase(unittest.TestCase):
             "password": "1234",
         }
         response = self.client.post("/login", data=user_login)
-        print(response.json)
         self.assertEqual(response.status_code, 200)
         self.assertIn("data", response.json)
         self.assertIn("access_token", response.json["data"])
@@ -89,7 +88,7 @@ class UserTestCase(unittest.TestCase):
     def test_update_user(self):
         with app.app_context():
             user = User.query.filter_by(id=1).first()
-            self.assertIsNotNone(user, "Tidak ada pengguna dalam database")
+            self.assertIsNotNone(user, "User not found")
 
             response = self.client.put(
                 f"/user/{user.id}", json={"id": user.id, "name": "Updated Jhon"}
@@ -98,14 +97,14 @@ class UserTestCase(unittest.TestCase):
             self.assertEqual(
                 response.status_code,
                 200,
-                f"Kode status yang diharapkan adalah 200, tetapi mendapatkan {response.status_code}",
+                f"expecting 200, but get {response.status_code}",
             )
 
             updated_user = User.query.get(user.id)
             self.assertEqual(
                 updated_user.name,
                 "Updated John Doe",
-                "Nama pengguna tidak diperbarui dalam database",
+                "Username is not rename on the database",
             )
 
     def test_get_all_users(self):
