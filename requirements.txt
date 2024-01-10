@@ -2,7 +2,7 @@ alembic==1.13.1
 aniso8601==9.0.1
 blinker==1.7.0
 click==8.1.7
-dotenv==1.00
+python-dotenv==1.0.0
 Flask==3.0.0
 Flask-Migrate==4.0.5
 Flask-RESTful==0.3.10
