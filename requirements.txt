@@ -20,7 +20,7 @@ six==1.16.0
 SQLAlchemy==2.0.23
 tomli==2.0.1
 typing_extensions==4.9.0
-virtualenv==virtualenv 20.25.0
+virtualenv==20.25.0
 Werkzeug==3.0.1
 yapf==0.40.2
 zipp==3.17.0
