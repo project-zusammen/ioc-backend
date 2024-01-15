@@ -1,9 +1,7 @@
-from app.models.user import User
 from app.models.score import Score
 from app.models.exam import Exam
 from app import response, app, db
 from flask import request, jsonify
-import datetime
 from flask_jwt_extended import *
 
 
