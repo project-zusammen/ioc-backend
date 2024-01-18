@@ -15,9 +15,6 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Add this relationship to connect with the Score model
-    scores = db.relationship('Score', back_populates='user')
-
     def __repr__(self):
         return '<User {}>'.format(self.name)
 

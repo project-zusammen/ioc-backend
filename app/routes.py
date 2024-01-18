@@ -65,17 +65,17 @@ def score():
 
 
 # get scores by user id
-@app.route('/scores_user_id', methods=['GET'])
+@app.route('/scores_user_id/<id>', methods=['GET'])
 @jwt_required()
-def get_score_by_user():
-    return score_controller.get_scores_by_user_id()
+def get_score_by_user(id):
+    return score_controller.get_scores_by_user_id(id)
 
 
 # get scores by exam id
-@app.route('/scores_exam_id', methods=['GET'])
+@app.route('/scores_exam_id/<id>', methods=['GET'])
 @jwt_required()
-def get_score_by_exam():
-    return score_controller.get_scores_by_exam_id()
+def get_score_by_exam(id):
+    return score_controller.get_scores_by_exam_id(id)
 
 
 # get score, update score and delete score by score id,

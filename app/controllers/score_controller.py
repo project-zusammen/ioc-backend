@@ -66,10 +66,8 @@ def get_score_by_id(id):
         return response.internal_server_error()
 
 
-def get_scores_by_user_id():
+def get_scores_by_user_id(user_id):
     try:
-        user_id = request.form.get('user_id')
-
         scores = Score.query.filter_by(user_id=user_id).all()
 
         if scores:
@@ -90,9 +88,9 @@ def get_scores_by_user_id():
         return response.internal_server_error()
 
 
-def get_scores_by_exam_id():
+def get_scores_by_exam_id(exam_id):
     try:
-        exam_id = request.form.get('exam_id')
+        # exam_id = request.form.get('exam_id')
 
         scores = Score.query.filter_by(exam_id=exam_id).all()
 
