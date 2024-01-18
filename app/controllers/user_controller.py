@@ -121,7 +121,7 @@ def update_user(id):
 
             db.session.commit()
 
-            return response.success("", "data user has been")
+            return response.success("", "data user has been updated")
         else:
             return "Update data user is failed"
 
@@ -145,6 +145,7 @@ def delete_user(id):
 
 def userData(data):
     data = {
+        "id": data.id,
         "name": data.name,
         "email": data.email,
         "school": data.school,

@@ -15,6 +15,11 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    user_materials = db.relationship('Material', back_populates='user_materials', lazy=True)
+
+
+    exams = db.relationship('Exam', backref='user', lazy=True)
+
     def __repr__(self):
         return "<User {}>".format(self.name)
 
