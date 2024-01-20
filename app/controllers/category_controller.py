@@ -15,7 +15,7 @@ def get_all_category():
             }
         )
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def get_category_by_id(id):
@@ -28,7 +28,7 @@ def get_category_by_id(id):
         else:
             return jsonify({"error": "Category not found"})
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def create_category():
@@ -46,7 +46,7 @@ def create_category():
             }
         )
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def delete_category(id):
@@ -59,4 +59,4 @@ def delete_category(id):
 
         return response.success("", "Category has been deleted")
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500

@@ -23,7 +23,7 @@ def get_all_materials():
         formated_materials = [format_material(material) for material in materials]
         return jsonify({"materials": formated_materials})
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def get_material_by_id(id):
     try:
@@ -42,7 +42,7 @@ def get_material_by_id(id):
         else:
             return jsonify({"error": "Material not found"}), 404
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def create_material():
     try:
@@ -64,7 +64,7 @@ def create_material():
         db.session.commit()
         return jsonify({"material": format_material(material)})
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def update_material(id):
     try: 
@@ -89,7 +89,7 @@ def update_material(id):
         else:
             return "Update material is failed"
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def delete_material(id):
     try:
@@ -102,4 +102,4 @@ def delete_material(id):
         return response.success("", "Data material has been deleted")
     
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500

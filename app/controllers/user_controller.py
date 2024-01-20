@@ -23,7 +23,7 @@ def get_all_users():
         formatted_users = [format_user(user) for user in users]
         return jsonify({"users": formatted_users})
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def get_user_by_id(id):
@@ -47,7 +47,7 @@ def get_user_by_id(id):
             return jsonify({"error": "User not found"}), 404
 
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def register():
@@ -85,7 +85,7 @@ def register():
             }
         )
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def update_user(id):
@@ -126,7 +126,7 @@ def update_user(id):
             return "Update data user is failed"
 
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def delete_user(id):
@@ -140,7 +140,7 @@ def delete_user(id):
         return response.success("", "Data user has been deleted")
 
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def userData(data):

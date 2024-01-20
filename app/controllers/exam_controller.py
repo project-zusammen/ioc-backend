@@ -1,3 +1,4 @@
+import json
 from app.models.exam import Exam
 from app.models.user import User
 from app import response, app, db
@@ -26,7 +27,7 @@ def get_all_exam():
         formated_exams = [format_exam(exam) for exam in exams]
         return jsonify({"exams": formated_exams})
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def get_exam_by_id(id):
     try:
@@ -49,7 +50,7 @@ def get_exam_by_id(id):
         else:
             return jsonify({"error": "Exam not found"}), 404
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def create_exam():
     try:
@@ -79,7 +80,7 @@ def create_exam():
         db.session.commit()
         return jsonify({"exam": format_exam(exam)})
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def update_exam(id):
     try:
@@ -115,11 +116,11 @@ def update_exam(id):
         else:
             return "Update exam is failed"
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 def delete_exam(id):
     try:
-        exam = Exam.query.filter_by(id=id).first()
+        exam = Exam.query.filter_by(id).first()
         if not exam:
             return response.badRequest([], "Exam not found")
         db.session.delete(exam)
@@ -128,4 +129,4 @@ def delete_exam(id):
         return response.success("", "Data Exam has been deleted")
     
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
