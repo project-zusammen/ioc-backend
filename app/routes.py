@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import user_controller, category_controller
+from app.controllers import user_controller, category_controller, comment_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
 
@@ -46,3 +46,19 @@ def categoryRoute(id):
         return category_controller.get_category_by_id(id)
     elif request.method == 'DELETE':
         return category_controller.delete_category(id)
+
+@app.route('/comment', methods=['GET', 'POST'])
+##@jwt_required()
+def comment():
+    if request.method == 'GET':
+        return comment_controller.getCommentAll()
+    elif request.method == 'POST':
+        return comment_controller.addComment()
+    
+@app.route('/comment/<id>', methods=['GET', 'DELETE'])
+##@jwt_required()
+def commentRoute(id):
+    if request.method == 'GET':
+        return comment_controller.getCommentById(id)
+    elif request.method == 'DELETE':
+        return comment_controller.deleteComment(id)

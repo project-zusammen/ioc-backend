@@ -11,4 +11,4 @@ migrate = Migrate(app, db)
 jwt =JWTManager(app)
 
 from app import routes
-from app.models import user, category
+from app.models import user, category, comments
