@@ -55,7 +55,7 @@ def get_exam_by_id(id):
 def create_exam():
     try:
         current_user_data = get_jwt_identity()
-        user = User.query.get(current_user_data["id"])
+        id = current_user_data.get("id")
 
         question = request.form.get("question")
         correct_option = request.form.get("correct_option")
@@ -63,7 +63,7 @@ def create_exam():
         option_b = request.form.get("option_b")
         option_c = request.form.get("option_c")
         option_d = request.form.get("option_d")
-        user_id =  user.id
+        user_id = id
         material_id = request.form.get("material_id")
 
         exam = Exam(
@@ -78,7 +78,21 @@ def create_exam():
         )
         db.session.add(exam)
         db.session.commit()
-        return jsonify({"exam": format_exam(exam)})
+        return jsonify({
+            "exam":{
+                "id": exam.id,
+                "question": exam.question,
+                "correct_option": exam.correct_option,
+                "option_a": exam.option_a,
+                "option_b": exam.option_b,
+                "option_c": exam.option_c,
+                "option_d": exam.option_d,
+                "user_id": exam.user_id,
+                "material_id": exam.material_id,
+                "created_at": exam.created_at,
+                "updated_at": exam.updated_at
+            }
+        }), 200
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
 
@@ -120,7 +134,7 @@ def update_exam(id):
 
 def delete_exam(id):
     try:
-        exam = Exam.query.filter_by(id).first()
+        exam = Exam.query.filter_by(id=id).first()
         if not exam:
             return response.badRequest([], "Exam not found")
         db.session.delete(exam)

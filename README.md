@@ -41,3 +41,11 @@ To contribute:
     ```bash
     flask db upgrade
     ```
+9. Run this code to install pytest
+    ```bash
+    pip3 install pytest
+    ```
+10. Run this code to try the unit test
+    ```bash
+    pytest tests/exam_unit_test.py
+    ```
