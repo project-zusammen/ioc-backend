@@ -12,9 +12,9 @@ from datetime import datetime
 class ScoreControllerTestCase(unittest.TestCase):
     def setUp(self):
         # Create a test Flask app and configure it
-        app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        app.config["TESTING"] = True
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+        app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
         # Create a test client
         self.client = app.test_client()
@@ -57,136 +57,120 @@ class ScoreControllerTestCase(unittest.TestCase):
             db.drop_all()
 
     def test_create_score(self):
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        data = {
-            'user_id': 1,
-            'exam_id': 1,
-            'score': 90
-        }
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        data = {"user_id": 1, "exam_id": 1, "score": 90}
 
-        response = self.client.post('/score', data=data, headers=headers)
+        response = self.client.post("/score", data=data, headers=headers)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            b'Score for user with id 1 and exam_id 1 successfully added', response.data)
+            b"Score for user with id 1 and exam_id 1 successfully added", response.data
+        )
 
     def test_get_all_scores(self):
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.get('/score', headers=headers)
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.get("/score", headers=headers)
         data = response.get_json()
         # print(data)
         self.assertEqual(response.status_code, 200)
 
-        self.assertIn('scores', data)
+        self.assertIn("scores", data)
 
-        if 'scores' in data:
-            for score in data['scores']:
-                self.assertIn('score', score)
+        if "scores" in data:
+            for score in data["scores"]:
+                self.assertIn("score", score)
 
     def test_get_score_by_id(self):
         id = 1
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.get(f'/score/{id}', headers=headers)
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.get(f"/score/{id}", headers=headers)
         data = response.get_json()
-        user_data = data['scores']
+        user_data = data["scores"]
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(user_data['id'], id)
+        self.assertEqual(user_data["id"], id)
 
     def test_get_score_by_id_not_exist(self):
         id = 1000
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.get(f'/score/{id}', headers=headers)
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.get(f"/score/{id}", headers=headers)
         self.assertEqual(response.status_code, 400)
 
         data = response.get_json()
-        self.assertEqual(
-            data['message'], f"Score not found for this score id: {id}")
+        self.assertEqual(data["message"], f"Score not found for this score id: {id}")
 
     def test_get_scores_by_user_id(self):
-        user_data = {
-            "user_id": 1
-        }
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.get(
-            f'/scores_user_id', data=user_data, headers=headers)
+        user_data = {"user_id": 1}
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.get(f"/scores_user_id", data=user_data, headers=headers)
         self.assertEqual(response.status_code, 200)
 
-        data = response.get_json()['scores']
+        data = response.get_json()["scores"]
         self.assertIn("score", data[0])
-        self.assertEqual(user_data['user_id'], data[0]['user_id'])
+        self.assertEqual(user_data["user_id"], data[0]["user_id"])
 
     def test_get_scores_by_user_id_not_exist(self):
-        user_data = {
-            "user_id": 100
-        }
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.get(
-            f'/scores_user_id', data=user_data, headers=headers)
+        user_data = {"user_id": 100}
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.get(f"/scores_user_id", data=user_data, headers=headers)
         self.assertEqual(response.status_code, 400)
 
         data = response.get_json()
         self.assertEqual(
-            data['message'], f"Scores not found for this user id: {user_data['user_id']}")
+            data["message"],
+            f"Scores not found for this user id: {user_data['user_id']}",
+        )
 
     def test_get_scores_by_exam_id(self):
-        exam_data = {
-            "exam_id": 1
-        }
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.get(
-            f'/scores_exam_id', data=exam_data, headers=headers)
+        exam_data = {"exam_id": 1}
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.get(f"/scores_exam_id", data=exam_data, headers=headers)
 
         self.assertEqual(response.status_code, 200)
-        data = response.get_json()['scores']
+        data = response.get_json()["scores"]
 
         self.assertEqual(2, len(data))
         self.assertIn("exam_id", data[0])
 
     def test_get_scores_by_exam_id_not_exist(self):
-        exam_data = {
-            "exam_id": 1000
-        }
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.get(
-            f'/scores_exam_id', data=exam_data, headers=headers)
+        exam_data = {"exam_id": 1000}
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.get(f"/scores_exam_id", data=exam_data, headers=headers)
 
         self.assertEqual(response.status_code, 400)
         data = response.get_json()
 
         self.assertEqual(
-            data['message'], f"Scores with exam_id = {exam_data['exam_id']} not found")
+            data["message"], f"Scores with exam_id = {exam_data['exam_id']} not found"
+        )
 
     def test_update_score(self):
         score_id = 2
-        score_data = {
-            'user_id': 1,
-            'exam_id': 2,
-            'score': 90
-        }
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
+        score_data = {"user_id": 1, "exam_id": 2, "score": 90}
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
         response = self.client.put(
-            f'/score/{score_id}', data=score_data, headers=headers)
+            f"/score/{score_id}", data=score_data, headers=headers
+        )
 
         self.assertEqual(response.status_code, 200)
         data = response.get_json()["Update Success"]
 
-        self.assertEqual(data['id'], score_id)
-        self.assertEqual(data['user_id'], score_data['user_id'])
-        self.assertEqual(data['exam_id'], score_data['exam_id'])
-        self.assertEqual(data['score'], score_data['score'])
+        self.assertEqual(data["id"], score_id)
+        self.assertEqual(data["user_id"], score_data["user_id"])
+        self.assertEqual(data["exam_id"], score_data["exam_id"])
+        self.assertEqual(data["score"], score_data["score"])
 
     def test_delete_score(self):
         score_id = 3
-        headers = {'Authorization': 'Bearer {}'.format(self.jwt_token)}
-        response = self.client.delete(
-            f'/score/{score_id}', headers=headers)
+        headers = {"Authorization": "Bearer {}".format(self.jwt_token)}
+        response = self.client.delete(f"/score/{score_id}", headers=headers)
 
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
         self.assertEqual(
-            data['message'], f"Score with id = {score_id} has been deleted")
+            data["message"], f"Score with id = {score_id} has been deleted"
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

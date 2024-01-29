@@ -16,10 +16,10 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Add this relationship to connect with the Score model
-    scores = db.relationship('Score', back_populates='user')
+    scores = db.relationship("Score", back_populates="user")
 
     def __repr__(self):
-        return '<User {}>'.format(self.name)
+        return "<User {}>".format(self.name)
 
     def setPassword(self, password):
         self.password = generate_password_hash(password)
