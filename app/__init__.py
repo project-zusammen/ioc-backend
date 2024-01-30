@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-jwt =JWTManager(app)
+jwt = JWTManager(app)
 
 from app import routes
-from app.models import user, category
+from app.models import user, category, material, exam
