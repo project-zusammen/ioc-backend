@@ -31,22 +31,9 @@ def get_all_exam():
 
 def get_exam_by_id(id):
     try:
-        GetExam = Exam.query.get(id)
-        if GetExam :
-            exam = {
-                 "id": GetExam.id,
-                "question": GetExam.question,
-                "correct_option": GetExam.correct_option,
-                "option_a": GetExam.option_a,
-                "option_b": GetExam.option_b,
-                "option_c": GetExam.option_c,
-                "option_d": GetExam.option_d,
-                "user_id": GetExam.user_id,
-                "material_id" : GetExam.material_id,
-                "created_at": GetExam.created_at,
-                "updated_at": GetExam.updated_at
-            }
-            return jsonify(exam)
+        get_exam = Exam.query.get(id)
+        if get_exam :
+            return jsonify(format_exam(get_exam))
         else:
             return jsonify({"error": "Exam not found"}), 404
     except Exception as e:
