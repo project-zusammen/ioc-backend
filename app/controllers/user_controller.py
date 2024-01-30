@@ -123,7 +123,7 @@ def update_user(id):
 
             return response.success("", "data user has been updated")
         else:
-            return "Update data user is failed"
+            return response.badRequest([], "Failed updating user data, user not found")
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
