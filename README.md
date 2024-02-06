@@ -41,3 +41,5 @@ To contribute:
     ```bash
     flask db upgrade
     ```
+    
+9. Copy .env-template and rename the copied file as .env, fill in the required credentials
