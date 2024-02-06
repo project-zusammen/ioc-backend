@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import user_controller, category_controller, exam_controller, material_controller
+from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
 
@@ -43,7 +43,6 @@ def category():
         return category_controller.get_all_category()
     return category_controller.create_category()
 
-
 @app.route("/category/<id>", methods=["GET", "DELETE"])
 @jwt_required()
 def categoryRoute(id):
@@ -84,4 +83,33 @@ def materialRoute(id):
         return material_controller.update_material(id)
     elif request.method == "DELETE":
         return material_controller.delete_material(id)
+ 
+@app.route("/score", methods=["GET", "POST"])
+@jwt_required()
+def score():
+    if request.method == "GET":
+        return score_controller.get_all_scores()
+    elif request.method == "POST":
+        return score_controller.create_score()
 
+
+@app.route("/scores_user_id/<id>", methods=["GET"])
+@jwt_required()
+def get_score_by_user(id):
+    return score_controller.get_scores_by_user_id(id)
+
+
+@app.route("/scores_exam_id/<id>", methods=["GET"])
+@jwt_required()
+def get_score_by_exam(id):
+    return score_controller.get_scores_by_exam_id(id)
+
+@app.route("/score/<id>", methods=["GET", "PUT", "DELETE"])
+@jwt_required()
+def score_modification(id):
+    if request.method == "GET":
+        return score_controller.get_score_by_id(id)
+    elif request.method == "PUT":
+        return score_controller.update_score(id)
+    elif request.method == "DELETE":
+        return score_controller.delete_score(id)

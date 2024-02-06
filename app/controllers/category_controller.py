@@ -31,6 +31,7 @@ def get_category_by_id(id):
         return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
+
 def create_category():
     try:
         name = request.form.get("name")
@@ -45,9 +46,9 @@ def create_category():
                 }
             }
         )
+        return response.success("", "Category has been created")
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
-
 
 def delete_category(id):
     try:

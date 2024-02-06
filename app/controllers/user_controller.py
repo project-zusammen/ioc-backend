@@ -26,10 +26,11 @@ def get_all_users():
         return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
+
 def get_user_by_id(id):
     try:
         GetUser = User.query.get(id)
-
+        
         if GetUser:
             user = {
                 "id": GetUser.id,
@@ -41,13 +42,14 @@ def get_user_by_id(id):
                 "dob": GetUser.dob,
                 "created_at": GetUser.created_at,
                 "updated_at": GetUser.updated_at,
-            }
+              
             return jsonify(user)
         else:
             return jsonify({"error": "User not found"}), 404
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
+
 
 
 def register():
@@ -84,6 +86,8 @@ def register():
                 }
             }
         )
+              
+        return response.success("", "User has been created")
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
 
@@ -98,6 +102,7 @@ def update_user(id):
         grade = request.form.get("grade")
         dob = request.form.get("dob")
         updated_at = datetime.datetime.utcnow()
+        updated_at = datetime.utcnow
 
         user = User.query.filter_by(id=id).first()
 
@@ -129,6 +134,7 @@ def update_user(id):
         return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
+
 def delete_user(id):
     try:
         user = User.query.filter_by(id=id).first()
@@ -141,6 +147,7 @@ def delete_user(id):
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
+
 
 
 def userData(data):

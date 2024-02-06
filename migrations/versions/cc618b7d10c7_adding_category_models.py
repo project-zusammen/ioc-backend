@@ -5,6 +5,7 @@ Revises: 9f0571c4a355
 Create Date: 2023-12-29 08:59:55.447898
 
 """
+
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
@@ -35,7 +36,6 @@ def upgrade():
             type_=sa.DateTime(timezone=250),
             nullable=True,
         )
-
 
 def downgrade():
     with op.batch_alter_table("user", schema=None) as batch_op:
