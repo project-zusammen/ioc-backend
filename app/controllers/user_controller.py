@@ -4,54 +4,52 @@ from flask import request, jsonify
 import datetime
 from flask_jwt_extended import *
 
+def format_user(user):
+    return {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "school": user.school,
+        "role": user.role,
+        "grade": user.grade,
+        "dob": user.dob,
+        "created_at": user.created_at,
+        "updated_at": user.updated_at,
+    }
 
 def get_all_users():
     try:
         users = User.query.all()
-        return jsonify(
-            {
-                "users": [
-                    {
-                        "id": user.id,
-                        "name": user.name,
-                        "email": user.email,
-                        "school": user.school,
-                        "role": user.role,
-                        "grade": user.grade,
-                        "dob": user.dob,
-                        "created_at": user.created_at,
-                        "updated_at": user.updated_at,
-                    }
-                    for user in users
-                ]
-            }
-        )
+        formatted_users = [format_user(user) for user in users]
+        return jsonify({"users": formatted_users})
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
+
 
 
 def get_user_by_id(id):
     try:
-        user = User.query.get(id)
-
-        if user:
-            data = {
-                "id": user.id,
-                "name": user.name,
-                "email": user.email,
-                "school": user.school,
-                "role": user.role,
-                "grade": user.grade,
-                "dob": user.dob,
-                "created_at": user.created_at,
-                "updated_at": user.updated_at,
-            }
-            return jsonify(data)
+        GetUser = User.query.get(id)
+        
+        if GetUser:
+            user = {
+                "id": GetUser.id,
+                "name": GetUser.name,
+                "email": GetUser.email,
+                "school": GetUser.school,
+                "role": GetUser.role,
+                "grade": GetUser.grade,
+                "dob": GetUser.dob,
+                "created_at": GetUser.created_at,
+                "updated_at": GetUser.updated_at,
+              
+            return jsonify(user)
         else:
             return jsonify({"error": "User not found"}), 404
 
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
+
 
 
 def register():
@@ -73,9 +71,25 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        return jsonify(
+            {
+                "user": {
+                    "id": user.id,
+                    "name": user.name,
+                    "email": user.email,
+                    "school": user.school,
+                    "role": user.role,
+                    "grade": user.grade,
+                    "dob": user.dob,
+                    "created_at": user.created_at,
+                    "updated_at": user.updated_at,
+                }
+            }
+        )
+              
         return response.success("", "User has been created")
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 
 def update_user(id):
@@ -86,6 +100,8 @@ def update_user(id):
         school = request.form.get("school")
         role = request.form.get("role")
         grade = request.form.get("grade")
+        dob = request.form.get("dob")
+        updated_at = datetime.datetime.utcnow()
         updated_at = datetime.utcnow
 
         user = User.query.filter_by(id=id).first()
@@ -104,17 +120,19 @@ def update_user(id):
                 user.role = role
             if grade is not None:
                 user.grade = grade
+            if dob is not None:
+                user.dob = dob
             user.updated_at = updated_at
 
             db.session.commit()
 
-            return "Data user has been updated"
-
+            return response.success("", "data user has been updated")
         else:
-            return "Update data failed"
+            return response.badRequest([], "Failed updating user data, user not found")
 
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
+
 
 
 def delete_user(id):
@@ -128,11 +146,13 @@ def delete_user(id):
         return response.success("", "Data user has been deleted")
 
     except Exception as e:
-        print(e)
+        return jsonify({"error": f"An error occurred: {e}"}), 500
+
 
 
 def userData(data):
     data = {
+        "id": data.id,
         "name": data.name,
         "email": data.email,
         "school": data.school,

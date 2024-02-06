@@ -12,7 +12,6 @@ def badRequest(values, message):
 
     return make_response(jsonify(res)), 400
 
-
 def internal_server_error(message="Incorrect format"):
     res = {
         "message": message,
