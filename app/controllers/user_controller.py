@@ -69,10 +69,11 @@ def register():
         user.setPassword(password)
         db.session.add(user)
         db.session.commit()
-
-        return response.success('', 'User has been created')
+        
+        return response.success(user, 'User has been created')
     except Exception as e:
             print(e)
+            return jsonify({user})
 
 def update_user(id):
     try:

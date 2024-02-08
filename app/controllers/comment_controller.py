@@ -1,6 +1,7 @@
 from app.models.comments import Comments
 from app import response, app, db
 from flask import request, jsonify
+from app.utils.jwt_utils import get_user_id_from_token
 
 def getCommentAll():
     try:
@@ -35,9 +36,9 @@ def getCommentById(id):
 
 def addComment():
     try:
-        comment = request.form.get('name')
+        comment = request.form.get('comment')
         replyTo = request.form.get('replyTo')
-        user_id = request.form.get('user_id')
+        user_id = get_user_id_from_token(get_jwt_identity())
         comment = Comments(
             comment = comment,
             replyTo = replyTo,

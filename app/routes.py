@@ -2,14 +2,31 @@ from app import app
 from app.controllers import user_controller, category_controller, comment_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
+from flask_swagger_ui import get_swaggerui_blueprint
+
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static',path)
+
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json' 
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "IOC-BE"
+    }
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+##app.register_blueprint(request_api.get_blueprint())
 
 
-@app.route('/')
-def index():
-    return 'hello world'
+##@app.route('/')
+##def index():
+  ##  return 'hello world'
 
 @app.route('/user', methods=['GET'])
-@jwt_required()
+##@jwt_required()
 def users():
     return user_controller.get_all_users()
 
@@ -18,7 +35,7 @@ def register():
     return user_controller.register()
 
 @app.route('/user/<id>', methods=['GET', 'PUT', 'DELETE'])
-@jwt_required()
+##@jwt_required()
 def userRoute(id):
     if request.method == 'GET':
         return user_controller.get_user_by_id(id)
