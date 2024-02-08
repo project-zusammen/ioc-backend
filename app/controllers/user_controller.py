@@ -42,6 +42,7 @@ def get_user_by_id(id):
                 "dob": GetUser.dob,
                 "created_at": GetUser.created_at,
                 "updated_at": GetUser.updated_at,
+            }
               
             return jsonify(user)
         else:
