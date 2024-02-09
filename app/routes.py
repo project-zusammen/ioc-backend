@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller
+from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller, answer_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
 
@@ -113,3 +113,8 @@ def score_modification(id):
         return score_controller.update_score(id)
     elif request.method == "DELETE":
         return score_controller.delete_score(id)
+
+@app.route("/answer/<id>", methods=["POST"])
+@jwt_required()
+def answer(id):
+    return answer_controller.answer_question(id)
