@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller, answer_controller, comment_controller
+from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller, answer_controller, comment_controller, comment_reply_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
 
@@ -126,3 +126,15 @@ def comment(material_id):
     if request.method == "GET":
         return comment_controller.get_all_comments_by_material_id(material_id)
     return comment_controller.create_comment(material_id)
+
+@app.route("/replies", methods=["GET"])
+@jwt_required()
+def get_all_replies():
+    return comment_reply_controller.get_all_comment_replies()
+
+@app.route("/reply/<comment_id>", methods=["GET", "POST"])
+@jwt_required()
+def reply(comment_id):
+    if request.method == "GET":
+        return comment_reply_controller.get_all_replies_by_comment_id(comment_id)
+    return comment_reply_controller.create_reply(comment_id)
