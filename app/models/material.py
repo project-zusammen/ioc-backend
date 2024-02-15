@@ -10,10 +10,10 @@ class Material(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    category = db.relationship('Category', back_populates='materials', lazy=True)    # Relasi Many-to-One dengan User
+    category = db.relationship('Category', back_populates='materials', lazy=True)
     user_materials = db.relationship('User', back_populates='user_materials', lazy=True)
-
     exams = db.relationship('Exam', backref='material', lazy=True)
+    comments = db.relationship("Comment", backref="material", lazy=True)
 
     def __repr__(self):
         return "<Material {}>".format(self.name)

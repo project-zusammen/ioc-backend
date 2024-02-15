@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller, answer_controller
+from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller, answer_controller, comment_controller, comment_reply_controller
 from flask import request, jsonify
 from flask_jwt_extended import *
 
@@ -8,17 +8,14 @@ from flask_jwt_extended import *
 def index():
     return "hello world"
 
-
 @app.route("/user", methods=["GET"])
 @jwt_required()
 def users():
     return user_controller.get_all_users()
 
-
 @app.route("/register", methods=["POST"])
 def register():
     return user_controller.register()
-
 
 @app.route("/user/<id>", methods=["GET", "PUT", "DELETE"])
 @jwt_required()
@@ -29,7 +26,6 @@ def userRoute(id):
         return user_controller.update_user(id)
     elif request.method == "DELETE":
         return user_controller.delete_user(id)
-
 
 @app.route("/login", methods=["POST"])
 def logins():
@@ -118,3 +114,27 @@ def score_modification(id):
 @jwt_required()
 def answer(id):
     return answer_controller.answer_question(id)
+
+@app.route("/comments", methods=["GET"])
+@jwt_required()
+def get_all_comments():
+    return comment_controller.get_all_comments()
+
+@app.route("/comment/<material_id>", methods=["GET", "POST"])
+@jwt_required()
+def comment(material_id):
+    if request.method == "GET":
+        return comment_controller.get_all_comments_by_material_id(material_id)
+    return comment_controller.create_comment(material_id)
+
+@app.route("/replies", methods=["GET"])
+@jwt_required()
+def get_all_replies():
+    return comment_reply_controller.get_all_comment_replies()
+
+@app.route("/reply/<comment_id>", methods=["GET", "POST"])
+@jwt_required()
+def reply(comment_id):
+    if request.method == "GET":
+        return comment_reply_controller.get_all_replies_by_comment_id(comment_id)
+    return comment_reply_controller.create_reply(comment_id)
