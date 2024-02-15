@@ -13,6 +13,7 @@ def format_user(user):
         "role": user.role,
         "grade": user.grade,
         "dob": user.dob,
+        "score": user.score,
         "created_at": user.created_at,
         "updated_at": user.updated_at,
     }
@@ -40,6 +41,7 @@ def get_user_by_id(id):
                 "role": GetUser.role,
                 "grade": GetUser.grade,
                 "dob": GetUser.dob,
+                "score": GetUser.score,
                 "created_at": GetUser.created_at,
                 "updated_at": GetUser.updated_at,
             }
@@ -64,9 +66,9 @@ def register():
         dob = request.form.get("dob")
         if dob is None:
             dob = "-"
-
+        score = 0
         user = User(
-            name=name, email=email, school=school, role=role, grade=grade, dob=dob
+            name=name, email=email, school=school, role=role, grade=grade, dob=dob, score=score
         )
         user.setPassword(password)
         db.session.add(user)
@@ -82,13 +84,13 @@ def register():
                     "role": user.role,
                     "grade": user.grade,
                     "dob": user.dob,
+                    "score": user.score,
                     "created_at": user.created_at,
                     "updated_at": user.updated_at,
                 }
             }
         )
               
-        return response.success("", "User has been created")
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
 
