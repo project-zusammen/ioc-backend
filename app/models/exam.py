@@ -15,6 +15,6 @@ class Exam(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     answers = db.relationship('Answer', backref='exam', lazy=True)
-    scores = db.relationship('Score', backref='exam', lazy=True)
+    
     def __repr__(self):
         return "<Exam {}>".format(self.name)

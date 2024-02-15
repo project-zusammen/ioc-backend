@@ -14,6 +14,7 @@ class Material(db.Model):
     user_materials = db.relationship('User', back_populates='user_materials', lazy=True)
     exams = db.relationship('Exam', backref='material', lazy=True)
     comments = db.relationship("Comment", backref="material", lazy=True)
+    scores = db.relationship('Score', backref='exam', lazy=True)
 
     def __repr__(self):
         return "<Material {}>".format(self.name)

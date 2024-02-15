@@ -6,7 +6,7 @@ class Score(db.Model):
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     score = db.Column(db.FLOAT, nullable=False)
     user_id = db.Column(db.BigInteger, db.ForeignKey("user.id"), nullable=False)
-    exam_id = db.Column(db.BigInteger, db.ForeignKey("exam.id"))
+    material_id = db.Column(db.BigInteger, db.ForeignKey("material.id"))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Define the relationship with the User model
