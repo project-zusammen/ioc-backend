@@ -8,12 +8,12 @@ from flask_jwt_extended import *
 def create_score():
     try:
         user_id = request.form.get("user_id")
-        material_id = request.form.get("material_id")
+        exam_id = request.form.get("exam_id")
         score = request.form.get("score")
 
         new_score = Score(
             user_id=user_id,
-            material_id=material_id,
+            exam_id=exam_id,
             score=score,
         )
 
@@ -22,7 +22,7 @@ def create_score():
 
         return response.success(
             "",
-            f"Score for user with id {user_id} and material_id {material_id} successfully added",
+            f"Score for user with id {user_id} and exam_id {exam_id} successfully added",
         )
     except Exception as e:
         print(e)
@@ -38,7 +38,7 @@ def get_all_scores():
                     {
                         "id": score.id,
                         "user_id": score.user_id,
-                        "material_id": score.material_id,
+                        "exam_id": score.exam_id,
                         "score": score.score,
                         "created_at": score.created_at,
                     }
@@ -60,7 +60,7 @@ def get_score_by_id(id):
                     "scores": {
                         "id": score.id,
                         "user_id": score.user_id,
-                        "material_id": score.material_id,
+                        "exam_id": score.exam_id,
                         "score": score.score,
                         "created_at": score.created_at,
                     }
@@ -85,7 +85,7 @@ def get_scores_by_user_id(user_id):
                         {
                             "id": score.id,
                             "user_id": score.user_id,
-                            "material_id": score.material_id,
+                            "exam_id": score.exam_id,
                             "score": score.score,
                             "created_at": score.created_at,
                         }
@@ -103,9 +103,9 @@ def get_scores_by_user_id(user_id):
         return response.internal_server_error()
 
 
-def get_scores_by_material_id(material_id):
+def get_scores_by_exam_id(exam_id):
     try:
-        scores = Score.query.filter_by(material_id=material_id).all()
+        scores = Score.query.filter_by(exam_id=exam_id).all()
 
         if scores:
             return jsonify(
@@ -114,7 +114,7 @@ def get_scores_by_material_id(material_id):
                         {
                             "id": score.id,
                             "user_id": score.user_id,
-                            "material_id": score.material_id,
+                            "exam_id": score.exam_id,
                             "score": score.score,
                             "created_at": score.created_at,
                         }
@@ -123,7 +123,7 @@ def get_scores_by_material_id(material_id):
                 }
             )
         else:
-            return response.badRequest([], f"Scores with material_id = {material_id} not found")
+            return response.badRequest([], f"Scores with exam_id = {exam_id} not found")
 
     except Exception as e:
         print(e)
@@ -134,7 +134,7 @@ def update_score(id):
     try:
         new_score = request.form.get("score")
         user_id = request.form.get("user_id")
-        material_id = request.form.get("material_id")
+        exam_id = request.form.get("exam_id")
 
         score = Score.query.filter_by(id=id).first()
 
@@ -144,8 +144,8 @@ def update_score(id):
                     score.score = new_score
                 if user_id is not None:
                     score.user_id = user_id
-                if material_id is not None:
-                    score.material_id = material_id
+                if exam_id is not None:
+                    score.exam_id = exam_id
 
                 db.session.commit()
 
@@ -157,7 +157,7 @@ def update_score(id):
                             "id": updated_data.id,
                             "score": updated_data.score,
                             "user_id": updated_data.user_id,
-                            "material_id": updated_data.material_id,
+                            "exam_id": updated_data.exam_id,
                         }
                     }
                 )

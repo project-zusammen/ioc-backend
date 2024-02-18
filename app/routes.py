@@ -1,6 +1,6 @@
 from app import app
-from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller, answer_controller, comment_controller, comment_reply_controller
-from flask import request, jsonify
+from app.controllers import user_controller, category_controller, exam_controller, material_controller, score_controller, answer_controller, comment_controller, comment_reply_controller, question_controller
+from flask import request
 from flask_jwt_extended import *
 
 
@@ -95,10 +95,10 @@ def get_score_by_user(user_id):
     return score_controller.get_scores_by_user_id(user_id)
 
 
-@app.route("/scores_material_id/<material_id>", methods=["GET"])
+@app.route("/scores_exam_id/<exam_id>", methods=["GET"])
 @jwt_required()
-def get_score_by_material(material_id):
-    return score_controller.get_scores_by_material_id(material_id)
+def get_score_by_exam(exam_id):
+    return score_controller.get_scores_by_exam_id(exam_id)
 
 @app.route("/score/<id>", methods=["GET", "PUT", "DELETE"])
 @jwt_required()
@@ -110,10 +110,10 @@ def score_modification(id):
     elif request.method == "DELETE":
         return score_controller.delete_score(id)
 
-@app.route("/answer/<id>", methods=["POST"])
+@app.route("/answer/<question_id>", methods=["POST"])
 @jwt_required()
-def answer(id):
-    return answer_controller.answer_question(id)
+def answer(question_id):
+    return answer_controller.answer_question_by_question_id(question_id)
 
 @app.route("/comments", methods=["GET"])
 @jwt_required()
@@ -138,3 +138,25 @@ def reply(comment_id):
     if request.method == "GET":
         return comment_reply_controller.get_all_replies_by_comment_id(comment_id)
     return comment_reply_controller.create_reply(comment_id)
+
+@app.route("/question", methods=["GET", "POST"])
+@jwt_required()
+def question():
+    if request.method == "GET":
+        return question_controller.get_all_questions()
+    return question_controller.create_question()
+
+@app.route("/question_by_exam_id/<exam_id>", methods=["GET"])
+@jwt_required()
+def get_questions_by_exam_id(exam_id):
+    return question_controller.get_all_questions_by_exam_id(exam_id)
+
+@app.route("/question/<id>", methods=["PUT", "DELETE", "GET"])
+@jwt_required()
+def questionRoute(id):
+    if request.method == "GET":
+        return question_controller.get_question_by_id(id)
+    elif request.method == "PUT":
+        return  question_controller.update_question(id)
+    elif request.method == "DELETE":
+        return question_controller.delete_question(id)

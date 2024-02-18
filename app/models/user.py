@@ -11,7 +11,6 @@ class User(db.Model):
     grade = db.Column(db.String(250))
     school = db.Column(db.String(250))
     role = db.Column(db.String(250), nullable=False)
-    dob = db.Column(db.DateTime(250))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     score = db.Column(db.BigInteger, nullable=False)
