@@ -11,13 +11,13 @@ class User(db.Model):
     grade = db.Column(db.String(250))
     school = db.Column(db.String(250))
     role = db.Column(db.String(250), nullable=False)
-    dob = db.Column(db.DateTime(250))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    score = db.Column(db.BigInteger, nullable=False)
 
+    comments = db.relationship("Comment", back_populates="user", lazy=True)
+    user_replies = db.relationship("CommentReply", back_populates="user", lazy=True)
     user_materials = db.relationship('Material', back_populates='user_materials', lazy=True)
-
-
     exams = db.relationship('Exam', backref='user', lazy=True)
 
     def __repr__(self):

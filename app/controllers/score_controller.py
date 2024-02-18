@@ -1,21 +1,17 @@
-from app.models.user import User
 from app.models.score import Score
-from app.models.exam import Exam
+from app.models.material import Material
 from app import response, app, db
 from flask import request, jsonify
-import datetime
 from flask_jwt_extended import *
 
 
 def create_score():
     try:
-        # id = request.form.get('id')
         user_id = request.form.get("user_id")
         exam_id = request.form.get("exam_id")
         score = request.form.get("score")
 
         new_score = Score(
-            # id=id,
             user_id=user_id,
             exam_id=exam_id,
             score=score,
@@ -109,8 +105,6 @@ def get_scores_by_user_id(user_id):
 
 def get_scores_by_exam_id(exam_id):
     try:
-        # exam_id = request.form.get('exam_id')
-
         scores = Score.query.filter_by(exam_id=exam_id).all()
 
         if scores:
@@ -145,7 +139,6 @@ def update_score(id):
         score = Score.query.filter_by(id=id).first()
 
         if score:
-            # make sure the updating process on database not messing up
             try:
                 if new_score is not None:
                     score.score = new_score

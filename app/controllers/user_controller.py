@@ -12,7 +12,7 @@ def format_user(user):
         "school": user.school,
         "role": user.role,
         "grade": user.grade,
-        "dob": user.dob,
+        "score": user.score,
         "created_at": user.created_at,
         "updated_at": user.updated_at,
     }
@@ -39,7 +39,7 @@ def get_user_by_id(id):
                 "school": GetUser.school,
                 "role": GetUser.role,
                 "grade": GetUser.grade,
-                "dob": GetUser.dob,
+                "score": GetUser.score,
                 "created_at": GetUser.created_at,
                 "updated_at": GetUser.updated_at,
             }
@@ -61,12 +61,11 @@ def register():
         school = request.form.get("school")
         role = request.form.get("role")
         grade = request.form.get("grade")
-        dob = request.form.get("dob")
-        if dob is None:
-            dob = "-"
-
+        if grade is None:
+            grade = "-"
+        score = 0
         user = User(
-            name=name, email=email, school=school, role=role, grade=grade, dob=dob
+            name=name, email=email, school=school, role=role, grade=grade, score=score
         )
         user.setPassword(password)
         db.session.add(user)
@@ -81,14 +80,13 @@ def register():
                     "school": user.school,
                     "role": user.role,
                     "grade": user.grade,
-                    "dob": user.dob,
+                    "score": user.score,
                     "created_at": user.created_at,
                     "updated_at": user.updated_at,
                 }
             }
         )
               
-        return response.success("", "User has been created")
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
 
@@ -101,7 +99,6 @@ def update_user(id):
         school = request.form.get("school")
         role = request.form.get("role")
         grade = request.form.get("grade")
-        dob = request.form.get("dob")
         updated_at = datetime.datetime.utcnow()
         updated_at = datetime.utcnow
 
@@ -121,8 +118,6 @@ def update_user(id):
                 user.role = role
             if grade is not None:
                 user.grade = grade
-            if dob is not None:
-                user.dob = dob
             user.updated_at = updated_at
 
             db.session.commit()
@@ -159,7 +154,6 @@ def userData(data):
         "school": data.school,
         "grade": data.grade,
         "role": data.role,
-        "dob": data.dob,
     }
 
     return data

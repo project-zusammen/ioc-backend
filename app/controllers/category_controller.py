@@ -46,7 +46,6 @@ def create_category():
                 }
             }
         )
-        return response.success("", "Category has been created")
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
 

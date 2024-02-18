@@ -9,8 +9,6 @@ class Score(db.Model):
     exam_id = db.Column(db.BigInteger, db.ForeignKey("exam.id"))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Define the relationship with the User model
-    # user = db.relationship('User', back_populates='scores')
 
     def __repr__(self):
         return "<Score {}>".format(self.score)
